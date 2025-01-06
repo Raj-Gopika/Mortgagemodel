@@ -25,7 +25,7 @@ class MortgageModel:
             'ltv': ltv,         # Loan-to-value ratio
             'income': income,   # Annual income
             'credit_score': credit_score,   # Credit score
-            'trend': trend      # Repayment trend (timely=0, delayed=1, failed=2)
+            'trend': trend      # Repayment trends (timely = 0, delayed = 1, failed = 2)
         }
 
         # Initialise Actions:
