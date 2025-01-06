@@ -28,26 +28,26 @@ class MortgageModel:
             'trend': trend      # Repayment trend (timely=0, delayed=1, failed=2)
         }
 
-        # Initialise Action space:
+        # Initialise Actions:
         self.actions = [(0, None), (1, 0), (1, 1)]
 
     def transition(self, action, exogenous_info):
         """
         Transition function simulates the state change given an action and exogenous information.
-        :param action: Tuple (approve, interest_rate_level)
-        :param exogenous_info: Tuple (house_value_change, credit_change, income_change)
-        :return: Updated state
+        - action: Tuple (approve, interest_rate_level)
+        - exogenous_info: Tuple (house_value_change, credit_change, income_change)
+        Returns the Updated state
         """
         ltv, income, credit_score, trend = self.state.values()
         approve, rate = action
         house_value_change, credit_change, income_change = exogenous_info
         
-        credit = credit_score  # Initialize with the current credit score
+        credit = credit_score 
 
         if approve == 1:
-            # Update LTV based on payment
+            # Update LTV
             loan_balance = ltv * 100000
-            loan_balance -= 5000  # Example repayment amount
+            loan_balance -= 5000 
             house_value = 100000 * (1 + house_value_change)
             new_ltv = loan_balance / house_value
             ltv = np.clip(new_ltv, 0.5, 1.5)  # Ensure LTV is within a realistic range
@@ -74,10 +74,10 @@ class MortgageModel:
     def reward(self, action, alpha=1, beta=10):
         """
         Reward function that combines profit and risk based on the action.
-        :param action: Tuple (approve, interest_rate_level)
-        :param alpha: Weight for profit
-        :param beta: Weight for risk
-        :return: Reward value
+        - action: Tuple (approve, interest_rate_level)
+        - alpha: Weight for profit
+        - beta: Weight for risk
+        return Reward value
         """
         ltv, income, credit, trend = self.state.values()
         approve, rate = action
